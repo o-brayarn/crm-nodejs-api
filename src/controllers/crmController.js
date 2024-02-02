@@ -21,3 +21,23 @@ export const getContacts = (req, res) => {
     .then((contact) => res.json(contact))
     .catch((err) => res.send(err));
 };
+
+export const getContactsWithId = (req, res) => {
+  Contact.findById(req.params.contactId)
+    .then((contact) => res.json(contact))
+    .catch((err) => res.send(err));
+};
+
+export const updateContact = (req, res) => {
+  Contact.findOneAndUpdate({ _id: req.params.contactId }, req.body, {
+    new: true,
+  })
+    .then((contact) => res.json(contact))
+    .catch((err) => res.send(err));
+};
+
+export const deleteContact = (req, res) => {
+  Contact.deleteOne({_id: req.params.contactId})
+  .then(() => res.json({message: "Contact successfully deleted"}))
+  .catch((err) => res.send(err));
+};

@@ -1,23 +1,42 @@
-import { addNewContact, getContacts } from "../controllers/crmController";
+import { get } from "mongoose";
+import {
+  addNewContact,
+  deleteContact,
+  getContacts,
+  getContactsWithId,
+  updateContact,
+} from "../controllers/crmController";
 
 const routes = (app) => {
   app
     .route("/contact")
-    .get((req, res, next) => {
+    // Find all contacts
+    .get(
+      (req, res, next) => {
         // Middleware {the code below is only for context}
-        console.log(`Request is from: ${req.originalUrl}`)
-        console.log(`Request Type: ${req.method}`)
+        console.log(`Request is from: ${req.originalUrl}`);
+        console.log(`Request Type: ${req.method}`);
         next();
-    }, getContacts
-    /*(req, res, next) => {
+      },
+      getContacts
+      /*(req, res, next) => {
           res.send("GET request successful!");
     } */
     )
+
+    // Post a new contact
     .post(addNewContact);
+
   // Update && delete
   app
     .route("/contact/:contactId")
-    .put((req, res) => res.send("PUT request successful!"))
-    .delete((req, res) => res.send("DELETE request successful!"));
+    // To find a contact by its ID
+    .get(getContactsWithId)
+
+    // Update contact
+    .put(updateContact)
+
+    // Delete contact
+    .delete(deleteContact);
 };
 export default routes;
